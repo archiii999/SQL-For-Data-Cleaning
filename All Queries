@@ -1,0 +1,277 @@
+USE [The Best HomeHotel]
+
+GO
+
+select * from dbo.SmartHotels
+
+------------------------------- UPDATE NULL ---------------------
+
+select a.id, a.host_id,a.zipcode, b.host_id, b.zipcode, ISNULL(a.zipcode,b.zipcode) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.zipcode is NULL 
+ 
+
+ UPDATE a
+ SET zipcode = ISNULL(a.zipcode,b.zipcode) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.zipcode is NULL 
+ 
+--------------------
+
+
+ UPDATE a
+ SET square_feet = ISNULL(a.square_feet,b.square_feet) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.square_feet is NULL 
+ 
+
+--------------------
+
+
+ UPDATE a
+ SET bedrooms = ISNULL(a.bedrooms,b.bedrooms) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.bedrooms is NULL 
+ 
+
+
+ ------------------
+
+ 
+ UPDATE a
+ SET bathrooms = ISNULL(a.bathrooms,b.bathrooms) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.bathrooms is NULL 
+ 
+-----------------
+
+ 
+ UPDATE a
+ SET cleaning_fee = ISNULL(a.cleaning_fee,b.cleaning_fee) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.cleaning_fee is NULL 
+ 
+--------------
+
+
+ UPDATE a
+ SET review_scores_rating = ISNULL(a.review_scores_rating,b.review_scores_rating) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.review_scores_rating is NULL 
+ 
+------------------
+
+
+
+ UPDATE a
+ SET reviews_per_month = ISNULL(a.reviews_per_month,b.reviews_per_month) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.reviews_per_month is NULL 
+ 
+
+ ------------------
+
+ 
+
+ UPDATE a
+ SET review_scores_accuracy = ISNULL(a.review_scores_accuracy,b.review_scores_accuracy) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.review_scores_accuracy is NULL 
+ 
+
+------------
+
+
+ UPDATE a
+ SET security_deposit = ISNULL(a.security_deposit,b.security_deposit) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.security_deposit is NULL 
+ 
+
+-----------------
+
+
+ UPDATE a
+ SET weekly_price = ISNULL(a.weekly_price,b.weekly_price) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.weekly_price is NULL 
+ 
+
+------------------
+
+
+
+ UPDATE a
+ SET monthly_price = ISNULL(a.monthly_price,b.monthly_price) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.monthly_price is NULL 
+ 
+------------
+
+
+
+ UPDATE a
+ SET host_neighbourhood = ISNULL(a.host_neighbourhood,b.host_neighbourhood) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.host_neighbourhood is NULL 
+ 
+
+-----------
+
+ UPDATE a
+ SET host_response_rate = ISNULL(a.host_response_rate,b.host_response_rate) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.host_response_rate is NULL 
+ 
+-----------
+
+ UPDATE a
+ SET name = ISNULL(a.name,b.name) 
+FROM dbo.SmartHotels a
+JOIN dbo.SmartHotels b
+ON  a.host_id = b.host_id AND a.id <> b.id where a.name is NULL 
+ 
+
+
+
+--------------------------Seperate out Address---------------
+
+
+select 
+SUBSTRING (host_location, 1, CHARINDEX(',',host_location) - 1) as HostCity,
+SUBSTRING (host_location, CHARINDEX(',',host_location) + 1,LEN(host_location)) as HostState,
+SUBSTRING (host_location,3, CHARINDEX(',',host_location)) as HostCountry from dbo.SmartHotels
+
+
+ALTER TABLE SmartHotels ADD HostCity VARCHAR(50)
+
+ALTER TABLE SmartHotels DROP COLUMN Host_City
+
+UPDATE dbo.SmartHotels 
+SET HostCity = SUBSTRING (host_location, 1, CHARINDEX(',',host_location) - 0)
+
+
+SUBSTRING (host_location, CHARINDEX(',',host_location) + 1,LEN(host_location),
+SUBSTRING (host_location,3, CHARINDEX(',',host_location))
+
+
+select * from SmartHotels
+
+------------------------REPLACE SPECIAL CHARECTERS VALUES ----------------------------
+
+
+
+UPDATE dbo.SmartHotels 
+SET name = REPLACE(REPLACE (name, '¶',''),'¤','')
+
+
+
+
+
+UPDATE dbo.SmartHotels 
+SET name = REPLACE(REPLACE (name, '!',''),'#','')
+
+
+
+UPDATE dbo.SmartHotels 
+SET name = REPLACE (name, '*','')
+
+
+
+
+UPDATE dbo.SmartHotels 
+SET name = REPLACE (name, '@','')
+
+
+
+UPDATE dbo.SmartHotels 
+SET name = REPLACE (name, '¼','')
+
+
+
+
+UPDATE dbo.SmartHotels 
+SET city = REPLACE(REPLACE (city, '¶',''),'¤','')
+
+
+UPDATE dbo.SmartHotels 
+SET city = REPLACE(REPLACE (city, '.',''),'9','')
+
+
+UPDATE dbo.SmartHotels 
+SET city = REPLACE(REPLACE (city, 'NULL','Berlin'),'(Blank)','Berlin')
+
+
+-----
+
+
+UPDATE dbo.SmartHotels 
+SET cancellation_policy = REPLACE (cancellation_policy, '_',' ')
+
+
+
+------------------------REPLACE BOOLEAN VALUES ----------------------------
+
+select *, REPLACE(REPLACE (host_is_superhost, 't','TRUE'),'f','FALSE') from dbo.SmartHotels
+
+UPDATE dbo.SmartHotels 
+SET host_is_superhost = REPLACE(REPLACE (host_is_superhost, 't','TRUE'),'f','FALSE')
+
+-----------------
+
+select *, REPLACE(REPLACE (host_is_superhost, 'TRUERUE','TRUE'),'FALSEALSE','FALSE') from dbo.SmartHotels
+
+UPDATE dbo.SmartHotels 
+SET host_is_superhost = REPLACE(REPLACE (host_is_superhost, 'TRUERUE','TRUE'),'FALSEALSE','FALSE')
+
+
+
+
+---------------
+
+select *, REPLACE(REPLACE (is_location_exact, 't','TRUE'),'f','FALSE') from dbo.SmartHotels
+
+UPDATE dbo.SmartHotels 
+SET is_location_exact = REPLACE(REPLACE (is_location_exact, 't','TRUE'),'f','FALSE')
+
+
+
+--------------
+
+
+UPDATE dbo.SmartHotels 
+SET requires_license = REPLACE(REPLACE (requires_license, 't','TRUE'),'f','FALSE')
+
+
+-----------------
+
+UPDATE dbo.SmartHotels 
+SET instant_bookable = REPLACE(REPLACE (instant_bookable, 't','TRUE'),'f','FALSE')
+
+--------------------
+
+UPDATE dbo.SmartHotels 
+SET require_guest_phone_verification = REPLACE(REPLACE (require_guest_phone_verification, 't','TRUE'),'f','FALSE')
+
+---------------
+
+UPDATE dbo.SmartHotels 
+SET require_guest_profile_picture = REPLACE(REPLACE (require_guest_profile_picture, 't','TRUE'),'f','FALSE')
+
+
+-----------
+
